@@ -36,6 +36,23 @@ async def send_data(session: aiohttp.ClientSession, url: str, data: dict) -> dic
         }
 
 
+async def update_data(session: aiohttp.ClientSession, url: str, data: dict) -> dict:
+    try:
+        async with session.put(url, json=data) as response:
+            body = await response.text()
+            return {
+                "url": url,
+                "status": response.status,
+                "body": body
+            }
+    except Exception as e:
+        return {
+            "url": url,
+            "status": "Error",
+            "body": str(e)
+        }
+
+
 async def main():
     urls = [
         "https://jsonplaceholder.typicode.com/posts/1",
