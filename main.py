@@ -3,22 +3,36 @@ import aiohttp
 
 
 async def fetch_url(session: aiohttp.ClientSession,url: str) -> dict:
-    async with session.get(url) as response:
-        body =  await response.text()
+    try:
+        async with session.get(url) as response:
+            body =  await response.text()
+            return {
+                "url": url,
+                "status": response.status,
+                "body": body
+            }
+    except Exception as e:
         return {
             "url": url,
-            "status": response.status,
-            "body": body
+            "status": "Error",
+            "body": str(e)
         }
 
 
 async def send_data(session: aiohttp.ClientSession, url: str, data: dict) -> dict:
-    async with session.post(url, json=data) as response:
-        body = await response.text()
+    try:
+        async with session.post(url, json=data) as response:
+            body = await response.text()
+            return {
+                "url": url,
+                "status": response.status,
+                "body": body
+            }
+    except Exception as e:
         return {
             "url": url,
-            "status": response.status,
-            "body": body
+            "status": "Error",
+            "body": str(e)
         }
 
 
