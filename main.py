@@ -12,6 +12,16 @@ async def fetch_url(session: aiohttp.ClientSession,url: str) -> dict:
         }
 
 
+async def send_data(session: aiohttp.ClientSession, url: str, data: dict) -> dict:
+    async with session.post(url, json=data) as response:
+        body = await response.text()
+        return {
+            "url": url,
+            "status": response.status,
+            "body": body
+        }
+
+
 async def main():
     urls = [
         "https://jsonplaceholder.typicode.com/posts/1",
